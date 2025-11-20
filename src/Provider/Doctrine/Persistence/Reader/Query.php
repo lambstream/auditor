@@ -35,17 +35,17 @@ final class Query implements QueryInterface
 
     private array $orderBy = [];
 
-    private Configuration $configuration;
+    private ConfigurationInterface $configuration;
     private int $offset = 0;
 
     private int $limit = 0;
 
     private readonly \DateTimeZone $timezone;
 
-    public function __construct(private readonly string $table, private readonly Connection $connection, ConfigurationInterface $configuration, string $timezone)
+    public function __construct(private readonly string $table, private readonly Connection $connection, string $timezone, ConfigurationInterface $configuration = new Configuration([]))
     {
-        $this->configuration = $configuration;
         $this->timezone = new \DateTimeZone($timezone);
+        $this->configuration = $configuration;
 
         foreach ($this->getSupportedFilters() as $filterType) {
             $this->filters[$filterType] = [];

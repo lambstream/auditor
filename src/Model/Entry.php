@@ -45,16 +45,16 @@ final class Entry
         return $this->id;
     }
 
-    public function setExtraField($key, $value = null): void
+    public function setExtraField(mixed $key, mixed $value = null): void
     {
-        if ($key === (array)$key) {
+        if ($key === (array) $key) {
             $this->extra_fields = $key;
         } else {
             $this->extra_fields[$key] = $value;
         }
     }
 
-    public function getExtraField($key = ''): mixed
+    public function getExtraField(mixed $key = ''): mixed
     {
         if ('' === $key) {
             return $this->extra_fields;

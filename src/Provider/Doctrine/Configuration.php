@@ -250,10 +250,10 @@ final class Configuration implements ConfigurationInterface
         return $this->extraFields;
     }
 
-    public function getAllFields(): array
+    public function getAllFields(array $defaultTableOptions = []): array
     {
         return array_merge(
-            SchemaHelper::getAuditTableColumns(),
+            SchemaHelper::getAuditTableColumns($defaultTableOptions),
             $this->extraFields
         );
     }
@@ -279,7 +279,7 @@ final class Configuration implements ConfigurationInterface
         foreach ($this->extraIndices as $extraIndexField => $extraIndexOptions) {
             $indices[$extraIndexField] = [
                 'type' => $extraIndexOptions['type'] ?? 'index',
-                'name' => sprintf('%s_%s_idx', $extraIndexOptions['name_prefix'] ?? $extraIndexField, md5($tablename)),
+                'name' => \sprintf('%s_%s_idx', $extraIndexOptions['name_prefix'] ?? $extraIndexField, md5($tablename)),
             ];
         }
 

@@ -116,13 +116,14 @@ final class DoctrineProvider extends AbstractProvider
         $entity = $payload['entity'];
         unset($payload['table'], $payload['entity']);
 
-        $fields = array_combine(array_keys($payload), array_map(function ($x) {return ":{$x}"; }, array_keys($payload)));
+        $fields = array_combine(array_keys($payload), array_map(static function (mixed $x) {return ":{$x}"; }, array_keys($payload)));
         \assert(\is_array($fields));    // helps PHPStan
 
-        $query = sprintf(
+        $keys = array_keys($fields);
+        $query = \sprintf(
             'INSERT INTO %s (%s) VALUES (%s)',
             $auditTable,
-            implode(', ', array_keys($fields)),
+            implode(', ', $keys),
             implode(', ', array_values($fields))
         );
 

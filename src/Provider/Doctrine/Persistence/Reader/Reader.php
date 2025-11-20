@@ -48,8 +48,8 @@ final readonly class Reader implements ReaderInterface
         $query = new Query(
             $this->getEntityAuditTableName($entity),
             $connection,
-            $this->provider->getConfiguration(),
             $timezone,
+            configuration: $this->provider->getConfiguration(),
         );
         $query
             ->addOrderBy(Query::CREATED_AT, 'DESC')
