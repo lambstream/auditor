@@ -119,11 +119,10 @@ final class DoctrineProvider extends AbstractProvider
         $fields = array_combine(array_keys($payload), array_map(static function (mixed $x) {return ":{$x}"; }, array_keys($payload)));
         \assert(\is_array($fields));    // helps PHPStan
 
-        $keys = array_keys($fields);
         $query = \sprintf(
             'INSERT INTO %s (%s) VALUES (%s)',
             $auditTable,
-            implode(', ', $keys),
+            implode(', ', array_keys($fields)),
             implode(', ', array_values($fields))
         );
 
@@ -132,7 +131,7 @@ final class DoctrineProvider extends AbstractProvider
         $statement = $storageService->getEntityManager()->getConnection()->prepare($query);
 
         foreach ($payload as $key => $value) {
-            $statement->bindValue(array_search($key, $keys, true) + 1, $value);
+            $statement->bindValue($key, $value);
         }
 
         $statement->executeStatement();
